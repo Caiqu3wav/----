@@ -29,6 +29,18 @@ void processCsv(const char csv[], const char selectedColumns[], const char filte
         
 
     free(csvCopy);
+
+    //formatando filtros
+    std::vector<std::string> filtersArr;
+    char *filters_cpy = strdup(filters);
+    char *filters_token = strtok(filters_cpy, "\n");
+
+    while (filters_token != NULL) {
+        filtersArr.push_back(std::string(filters_token));
+        filters_token = strtok(NULL, "\n");
+    }
+    std::vector<std::string>filtersFormated = organizeFilters(filtersArr)
+
         //filtrando linhas
         char *selectedColumnsCpy = strdup(selectedColumns);
     std::vector<std::string> selected_columns;
@@ -63,4 +75,13 @@ int main() {
     processCsv(csv, "header1,header3,header4", "header1>1\nheader3<10\n");    
 
     return 0;
+}
+
+std::vector<std::string> organizeFilters(const std::vector<std::string> filters) {
+       const char **filters_vector;
+       size_t pos = filters.find("<>!");
+
+        if (pos != std::string::npos) {
+            return filters.
+        }
 }
