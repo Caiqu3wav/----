@@ -37,8 +37,15 @@ string send_message(const string& message) {
     for (char c : message) {
 
         if (c == ' ') {
-            pressedButtons.push_back("0");
-        } else if (isdigit(c)) {
+         if (!pressedButtons.empty() && pressedButtons.back() == "0") {
+                pressedButtons.back() += " ";
+            } 
+                pressedButtons.push_back("0"); // Adiciona um novo espaço
+            }         
+          else if (isdigit(c) || c == '*') {
+    if (!pressedButtons.empty() && pressedButtons.back() == std::string(1, c)) {
+              pressedButtons.back() += " ";
+            }
             pressedButtons.push_back(std::string(1, c) + "-"); // Para números, mantém o "-"
         } else if (isalpha(c)) {
             // Verifica se a letra é maiúscula
@@ -56,25 +63,39 @@ string send_message(const string& message) {
                     pressedButtons.back() += to_string(buttonPressed.first);
                 }
             }
-        }  else if (c == '-' || c == '+' || c == '=') {
+        }  else if (buttons[9].find(c) != std::string::npos) {
           auto buttonPressed = contains_char(c);
           if (buttonPressed.first != -1) {
                char symbolFirstChar = buttons[buttonPressed.first][0];
-              for (int i = 0; i < buttonPressed.second; ++i){
-            pressedButtons.back() += symbolFirstChar; 
-              }
+
+               if (!pressedButtons.empty() && pressedButtons.back() == "*") {
+            pressedButtons.back() += " "; // Adiciona um espaço
+        }
+
+              for (int i = 0; i < buttonPressed.second; ++i) {
+            pressedButtons.push_back(string(1, symbolFirstChar)); // Adiciona o caractere correspondente
+        }
             }
         }
          else {
-            // Adiciona a sequência para caracteres especiais
-            auto buttonPressed = contains_char(c);
-            if (buttonPressed.first != -1) {
-                pressedButtons.push_back(to_string(buttonPressed.first));
-                for (int i = 2; i < buttonPressed.second; ++i) {
-                    pressedButtons.back() += to_string(buttonPressed.first);
-                }
-            }
+    // Adiciona a sequência para caracteres especiais
+    auto buttonPressed = contains_char(c);
+    if (buttonPressed.first != -1) {
+        // Verifica se pressedButtons não está vazio e se o último botão é igual ao botão atual
+        if (!pressedButtons.empty() && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
+            pressedButtons.push_back(" "); // Adiciona um espaço antes de adicionar o novo botão
         }
+        
+        // Adiciona o número do botão
+        pressedButtons.push_back(to_string(buttonPressed.first));
+
+        // Adiciona a sequência de pressionamentos para o botão
+        for (int i = 2; i < buttonPressed.second; ++i) {
+            pressedButtons.back() += to_string(buttonPressed.first);
+        }
+    }
+}
+
         
         if (pressedButtons.size() > 1 && isalpha(c) &&
             pressedButtons.back()[0] == pressedButtons[pressedButtons.size() - 2][0]) {
@@ -85,15 +106,14 @@ string send_message(const string& message) {
     // Cria a string final de teclas pressionadas
     string result;
     for (const string& str : pressedButtons) {
-        result += str;
+        result += str; // Adiciona um espaço entre as teclas pressionadas
     }
+
     return result;
 }
 
-
-
 int main() {
-string message = "Heyy";
+string message = "A--b==C";
       cout << send_message(message);
     return 0;
 }
