@@ -56,6 +56,13 @@ string send_message(const string& message) {
             }
 
             auto buttonPressed = contains_char(tolower(c));
+            
+            if (buttonPressed.first != -1) {
+        if (!pressedButtons.empty() && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
+            pressedButtons.back() += " "; // Adiciona um espaço se o último botão é o mesmo
+        }
+            }
+            
             if (buttonPressed.first != -1) {
                 // Adiciona a sequência do botão
                 pressedButtons.push_back(to_string(buttonPressed.first));
@@ -80,12 +87,19 @@ string send_message(const string& message) {
          else {
     // Adiciona a sequência para caracteres especiais
     auto buttonPressed = contains_char(c);
+         if (c == '#') {
+        pressedButtons.back() += "#";
+        pressedButtons.back() += "-";
+      } else {
+           
+           
     if (buttonPressed.first != -1) {
-        // Verifica se pressedButtons não está vazio e se o último botão é igual ao botão atual
-        if (!pressedButtons.empty() && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
+      
+      
+      if (!pressedButtons.empty() && pressedButtons.back()[1] != '-' && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
             pressedButtons.push_back(" "); // Adiciona um espaço antes de adicionar o novo botão
         }
-        
+       
         // Adiciona o número do botão
         pressedButtons.push_back(to_string(buttonPressed.first));
 
@@ -101,6 +115,7 @@ string send_message(const string& message) {
             pressedButtons.back()[0] == pressedButtons[pressedButtons.size() - 2][0]) {
             pressedButtons.insert(pressedButtons.end() - 1, " "); // Insere um espaço antes do último botão
         }
+      }
     }
 
     // Cria a string final de teclas pressionadas
@@ -109,6 +124,7 @@ string send_message(const string& message) {
         result += str; // Adiciona um espaço entre as teclas pressionadas
     }
 
+    
     return result;
 }
 
