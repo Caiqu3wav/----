@@ -12,7 +12,7 @@ char* solution(const char *camelCase) {
   int j = 0;
 
   for (int i = 0; i < charLength; i++) {
-    if (camelCase[i] >= 'A' && camelCase[i] < 'Z' && i != 0) {
+    if (camelCase[i] >= 'A' && camelCase[i] <= 'Z' && i != 0) {
         result[j++] = ' ';
     }
        result[j++] = camelCase[i];

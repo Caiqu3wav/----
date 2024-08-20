@@ -43,8 +43,8 @@ string send_message(const string& message) {
                 pressedButtons.push_back("0"); // Adiciona um novo espaço
             }         
           else if (isdigit(c) || c == '*') {
-    if (!pressedButtons.empty() && pressedButtons.back() == std::string(1, c)) {
-              pressedButtons.back() += " ";
+    if (!pressedButtons.empty() && pressedButtons.back()[1] != '-' && pressedButtons.back()[0] == c) {
+            pressedButtons.push_back(" ");
             }
             pressedButtons.push_back(std::string(1, c) + "-"); // Para números, mantém o "-"
         } else if (isalpha(c)) {
@@ -57,11 +57,11 @@ string send_message(const string& message) {
 
             auto buttonPressed = contains_char(tolower(c));
             
-            if (buttonPressed.first != -1) {
-        if (!pressedButtons.empty() && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
+    if (buttonPressed.first != -1) {
+        if (!pressedButtons.empty() && pressedButtons.back()[1] != '-' && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
             pressedButtons.back() += " "; // Adiciona um espaço se o último botão é o mesmo
         }
-            }
+          }
             
             if (buttonPressed.first != -1) {
                 // Adiciona a sequência do botão
@@ -88,14 +88,16 @@ string send_message(const string& message) {
     // Adiciona a sequência para caracteres especiais
     auto buttonPressed = contains_char(c);
          if (c == '#') {
-        pressedButtons.back() += "#";
-        pressedButtons.back() += "-";
+            if (!pressedButtons.empty() && pressedButtons.back() != "#") {
+                pressedButtons.back() += "#";
+                pressedButtons.back() += "-";
+            } else {
+                pressedButtons.push_back("#-");
+            }
       } else {
            
            
     if (buttonPressed.first != -1) {
-      
-      
       if (!pressedButtons.empty() && pressedButtons.back()[1] != '-' && pressedButtons.back()[0] == to_string(buttonPressed.first)[0]) {
             pressedButtons.push_back(" "); // Adiciona um espaço antes de adicionar o novo botão
         }
@@ -113,7 +115,9 @@ string send_message(const string& message) {
         
         if (pressedButtons.size() > 1 && isalpha(c) &&
             pressedButtons.back()[0] == pressedButtons[pressedButtons.size() - 2][0]) {
+                if (pressedButtons[pressedButtons.size() - 2][0] != '#') {
             pressedButtons.insert(pressedButtons.end() - 1, " "); // Insere um espaço antes do último botão
+                }
         }
       }
     }
