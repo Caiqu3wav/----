@@ -61,8 +61,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/lenovo-b40/Desktop/devprojects/++++/src/WhoLikes",
-      "program": "c:/Users/lenovo-b40/Desktop/devprojects/++++/src/WhoLikes/build/Debug/outDebug",
+      "cwd": "c:/Users/lenovo-b40/Desktop/devprojects/++++/src/C++/reversedWord",
+      "program": "c:/Users/lenovo-b40/Desktop/devprojects/++++/src/C++/reversedWord/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
